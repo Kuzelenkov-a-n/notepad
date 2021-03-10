@@ -1,7 +1,8 @@
+# encoding: utf-8
+#
 require 'date'
 
 class Task < Post
-
   def initialize
     super
 
@@ -9,20 +10,30 @@ class Task < Post
   end
 
   def read_from_console
-    puts "Что надо сделать?"
+    puts 'Что надо сделать?'
     @text = STDIN.gets.chomp
 
-    puts "К какому числу? Укажите дату в формате дд.мм.гггг, например 01.01.2021"
+    puts 'К какому числу? Укажите дату в формате ДД.ММ.ГГГГ, ' \
+      'например 01.01.2021'
     input = STDIN.gets.chomp
 
     @due_date = Date.parse(input)
   end
 
-  def to_string
-    time_string = "Создано: #{@created_at.strftime("%Y.%m.%d, %H:%M:%S")} \n\r \n\r"
-
-    deadline = "Крайний срок: #{@due_date}"
+  def to_strings
+    deadline = "Крайний срок: #{@due_date.strftime('%Y.%m.%d')}"
+    time_string = "Создано: #{@created_at.strftime('%Y.%m.%d, %H:%M:%S')} \n"
 
     [deadline, @text, time_string]
+  end
+
+  def to_db_hash
+    super.merge('text' => @text, 'due_date' => @due_date.to_s)
+  end
+
+  def load_data(data_hash)
+    super
+
+    @due_date = Date.parse(data_hash['due_date'])
   end
 end
