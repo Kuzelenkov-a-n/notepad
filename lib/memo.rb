@@ -1,4 +1,5 @@
 # encoding: utf-8
+#
 class Memo < Post
   def read_from_console
     puts 'Новая заметка (все, что пишите до строчки "end"):'
