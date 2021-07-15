@@ -115,6 +115,20 @@ class Post
     insert_row_id
   end
 
+  def delete_by_id(row_id)
+    db = SQLite3::Database.open(SQLITE_DB_FILE)
+
+    db.results_as_hash = true
+
+    begin
+      db.execute('DELETE FROM notepad WHERE rowid = ?', row_id)
+    rescue SQLite3::SQLException => e
+      puts "Таблица базы данных не найдена #{e}"
+    end
+
+    db.close
+  end
+
   def save
     file = File.new(file_path, 'w:UTF-8')
 
