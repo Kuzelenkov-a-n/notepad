@@ -33,4 +33,10 @@ entry.read_from_console
 
 id = entry.save_to_db
 
-puts "Запись успешно сохранена #{id}"
+puts "Запись успешно сохранена в БД под номером №_#{id}"
+
+puts 'Желаете сохранить запись в отдельный текстовый файл? Y/n'
+
+choice = STDIN.gets.chomp.downcase
+
+entry.save if choice == 'y'
