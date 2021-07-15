@@ -6,7 +6,11 @@ class Post
   SQLITE_DB_FILE = 'notepad.sl3'.freeze
 
   def self.post_types
-    { 'Memo' => Memo, 'Task' => Task, 'Link' => Link }
+    {
+      'Memo' => Memo,
+      'Task' => Task,
+      'Link' => Link
+    }
   end
 
   def self.create(type)
@@ -24,7 +28,7 @@ class Post
     db = SQLite3::Database.open(SQLITE_DB_FILE)
     db.results_as_hash = true
     begin
-      result = db.execute('SELECT * FROM notepad WHERE  rowid = ?', id)
+      result = db.execute('SELECT * FROM notepad WHERE rowid = ?', id)
     rescue SQLite3::SQLException => e
       puts "Таблица базы данных не найдена #{e}"
     end
@@ -33,6 +37,7 @@ class Post
     return nil if result.empty?
 
     result = result[0]
+
     post = create(result['type'])
     post.load_data(result)
     post
@@ -40,21 +45,28 @@ class Post
 
   def self.find_all(limit, type)
     db = SQLite3::Database.open(SQLITE_DB_FILE)
+
     db.results_as_hash = false
+
     query = 'SELECT rowid, * FROM notepad '
     query += 'WHERE type = :type ' unless type.nil?
     query += 'ORDER by rowid DESC '
     query += 'LIMIT :limit ' unless limit.nil?
+
     begin
       statement = db.prepare query
     rescue SQLite3::SQLException => e
       puts "Таблица базы данных не найдена #{e}"
     end
+
     statement.bind_param('type', type) unless type.nil?
     statement.bind_param('limit', limit) unless limit.nil?
+
     result = statement.execute!
+
     statement.close
     db.close
+
     result
   end
 
@@ -80,8 +92,11 @@ class Post
 
   def save_to_db
     db = SQLite3::Database.open(SQLITE_DB_FILE)
+
     db.results_as_hash = true
+
     post_hash = to_db_hash
+
     begin
       db.execute(
         'INSERT INTO notepad (' +
@@ -92,8 +107,11 @@ class Post
     rescue SQLite3::SQLException => e
       puts "Таблица базы данных не найдена #{e}"
     end
+
     insert_row_id = db.last_insert_row_id
+
     db.close
+
     insert_row_id
   end
 

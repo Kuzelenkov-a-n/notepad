@@ -33,4 +33,4 @@ entry.read_from_console
 
 id = entry.save_to_db
 
-puts "Ура, запись сохранена #{id}"
+puts "Запись успешно сохранена #{id}"
