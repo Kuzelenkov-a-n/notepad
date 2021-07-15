@@ -23,7 +23,11 @@ class Post
 
     db = SQLite3::Database.open(SQLITE_DB_FILE)
     db.results_as_hash = true
-    result = db.execute('SELECT * FROM notepad WHERE  rowid = ?', id)
+    begin
+      result = db.execute('SELECT * FROM notepad WHERE  rowid = ?', id)
+    rescue SQLite3::SQLException => e
+      puts "Таблица базы данных не найдена #{e}"
+    end
     db.close
 
     return nil if result.empty?
@@ -41,7 +45,11 @@ class Post
     query += 'WHERE type = :type ' unless type.nil?
     query += 'ORDER by rowid DESC '
     query += 'LIMIT :limit ' unless limit.nil?
-    statement = db.prepare query
+    begin
+      statement = db.prepare query
+    rescue SQLite3::SQLException => e
+      puts "Таблица базы данных не найдена #{e}"
+    end
     statement.bind_param('type', type) unless type.nil?
     statement.bind_param('limit', limit) unless limit.nil?
     result = statement.execute!
@@ -74,12 +82,16 @@ class Post
     db = SQLite3::Database.open(SQLITE_DB_FILE)
     db.results_as_hash = true
     post_hash = to_db_hash
-    db.execute(
-      'INSERT INTO notepad (' +
-        post_hash.keys.join(', ') +
-        ") VALUES (#{('?,' * post_hash.size).chomp(',')})",
-      post_hash.values
-    )
+    begin
+      db.execute(
+        'INSERT INTO notepad (' +
+          post_hash.keys.join(', ') +
+          ") VALUES (#{('?,' * post_hash.size).chomp(',')})",
+        post_hash.values
+      )
+    rescue SQLite3::SQLException => e
+      puts "Таблица базы данных не найдена #{e}"
+    end
     insert_row_id = db.last_insert_row_id
     db.close
     insert_row_id
