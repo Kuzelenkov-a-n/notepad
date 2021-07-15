@@ -1,0 +1,16 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    sqlite3 (1.4.2)
+
+PLATFORMS
+  x86_64-darwin-20
+
+DEPENDENCIES
+  sqlite3 (~> 1.4, >= 1.4.2)
+
+RUBY VERSION
+   ruby 2.7.2p137
+
+BUNDLED WITH
+   2.2.15

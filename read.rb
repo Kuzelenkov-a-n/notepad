@@ -65,22 +65,22 @@ else
 end
 
 if result.empty?
-  puts "В блокноте нет записей..."
+  puts 'В блокноте нет записей...'
 else
-  puts "Хотите удалить какую-либо запись? Y/n"
+  puts 'Хотите удалить какую-либо запись? Y/n'
 
   choice = STDIN.gets.chomp.downcase
 
   if choice == 'y'
-    puts "Введите 'id' записи, которую хотите удалить:"
+    puts 'Введите "id" записи, которую хотите удалить:'
     post_id = STDIN.gets.chomp.to_i
 
     post_to_delete = Post.find_by_id(post_id)
 
     post_to_delete.delete_by_id(post_id)
 
-    puts "Запись успешно удалена из БД"
+    puts 'Запись успешно удалена из БД'
   else
-    puts "Выход из программы"
+    puts 'Выход из программы'
   end
 end
