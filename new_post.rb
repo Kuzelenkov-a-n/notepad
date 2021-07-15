@@ -15,6 +15,7 @@ require_relative 'lib/link'
 require_relative 'lib/task'
 
 puts 'Привет, я твой блокнот! Версия 2 + Sqlite'
+puts
 puts 'Что хотите записать в блокнот?'
 
 choices = Post.post_types.keys
@@ -33,8 +34,8 @@ entry.read_from_console
 
 id = entry.save_to_db
 
-puts "Запись успешно сохранена в БД под номером №_#{id}"
-
+puts "Запись успешно сохранена в БД под номером №#{id}"
+puts
 puts 'Желаете сохранить запись в отдельный текстовый файл? Y/n'
 
 choice = STDIN.gets.chomp.downcase
