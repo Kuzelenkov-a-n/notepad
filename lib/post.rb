@@ -138,7 +138,7 @@ class Post
   end
 
   def file_path
-    current_path = File.dirname(__FILE__)
+    current_path = File.dirname(__FILE__).gsub(/lib/, 'data')
 
     file_time = @created_at.strftime('%Y-%m-%d_%H-%M-%S')
 
